@@ -11,4 +11,5 @@ int main () {
     int y2 = 5;
 
     printf("The distance between (%d, %d) and (%d, %d) is: %0.2f.\n", x1, y1, x2, y2, distance(x1, x2, y1, y2));
+    printf("Hello world!");
 }
