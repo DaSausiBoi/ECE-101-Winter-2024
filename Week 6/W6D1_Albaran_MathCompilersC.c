@@ -8,11 +8,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main () {
-    int x1 = 1;
-    int x2 = 2;
-    int y1 = 2;
-    int y2 = 5;
+// Global variables
+float var1 = 15.5;
+float var2 = 10.2;
+float ans;
 
-    printf("The distance between (%d, %d) and (%d, %d) is: %0.2f.\n", x1, y1, x2, y2, distance(x1, x2, y1, y2));
+int main () {
+  ans = var1 + var2;
+  printf("%0.2f + %0.2f equals %0.2f.\n", var1, var2, ans);
 }
