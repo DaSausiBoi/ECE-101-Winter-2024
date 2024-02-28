@@ -17,10 +17,8 @@ float acceleration = 2.08;          // in m/s^2
 float deltaTime = 8;                // in sec
 
 int main () {
-  float moment = (initialVelocity * deltaTime) + ((1 / 2) * acceleration * (deltaTime * deltaTime)) + xInitial;
-  xFinal = moment;
-  printf("%0.2f", xFinal);
+  xFinal= (initialVelocity * deltaTime) + (0.5 * acceleration * (deltaTime * deltaTime)) + xInitial;
 
-  // printf("The final position of the car that started at %d meters going %0.2f m/s^2 over %d seconds is %0.2f meters away.\n", 
-    // xInitial, acceleration, deltaTime, xFinal);
+  printf("The final position of the car that started at %0.2f meters going %0.2f m/s^2 over %0.2f seconds is %0.2f meters away.\n", 
+    xInitial, acceleration, deltaTime, xFinal);
 }
