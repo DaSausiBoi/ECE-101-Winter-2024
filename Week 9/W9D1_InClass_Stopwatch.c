@@ -22,6 +22,10 @@ int timeFirst = 1;                                  // sets flag for first timin
 int startTime;
 int stopTime;
 int totalTime;
+int timeMin;
+int timeSec;
+int doubleSec;
+int singleSec;
 
 int main () {
   while (1) {                                   // MAIN LOOP
@@ -38,7 +42,7 @@ int main () {
 
     else if (watchState == 2) {                 // WAIT STATE
       if (waitFirst == 1) {                     // first run should print wait once
-        printf("Waiting, press ESC to shut down or LSHIFT to start timer...\n");
+        printf("Waiting, press ESC to shutdown or LSHIFT to start stopwatch...\n");
         waitFirst = 0;                          // prevents "wait" print after first run
       }
 
@@ -57,7 +61,7 @@ int main () {
 
     else if (watchState == 3) {
       if (timeFirst == 1) {                     // first run should print timing once
-        printf("Timing started...\n");
+        printf("Stopwatch started, press ESC to shutdown or LSHIFT to stop...\n");
         timeFirst = 0;                          // prevents "timing" print after first run
       }
 
@@ -65,6 +69,19 @@ int main () {
         waitFirst = 1;
         stopTime = clock();
         totalTime = stopTime - startTime;
+        timeSec = totalTime / CLOCKS_PER_SEC;
+        timeMin = timeSec / 60;
+
+        if (timeSec >= 60) {
+          timeSec = timeSec / 60;
+        }
+
+        if (timeSec <= 9) {
+          printf("Total time elapsed: %d:0%d\n\n", timeMin, timeSec);
+        }
+        else {
+          printf("Total time elapsed: %d:%d\n\n", timeMin, timeSec);
+        }
         watchState = 2;
       }
       else if (GetAsyncKeyState(VK_ESCAPE)) {   // TIMING --> SHUTDOWN
