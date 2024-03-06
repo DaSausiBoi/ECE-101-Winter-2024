@@ -21,7 +21,7 @@ int timeFirst = 1;                                  // sets flag for first timin
 // Data variable
 int startTime;
 int stopTime;
-int totalTime;
+int timeMs;
 int timeMin;
 int timeSec;
 int doubleSec;
@@ -68,28 +68,28 @@ int main () {
       if (GetAsyncKeyState(VK_LSHIFT)) {        // TIMING --> WAIT
         waitFirst = 1;
         stopTime = clock();
-        totalTime = stopTime - startTime;
-        timeSec = totalTime / CLOCKS_PER_SEC;
+        timeMs = stopTime - startTime;
+        timeSec = timeMs / CLOCKS_PER_SEC;
         timeMin = timeSec / 60;
 
-        if (timeSec >= 60) {
-          timeSec = timeSec / 60;
+        while (timeSec >= 60) {
+          timeSec = timeSec - 60;
         }
 
         if (timeSec <= 9) {
-          printf("Total time elapsed: %d:0%d\n\n", timeMin, timeSec);
+          printf("Total time elapsed: %d:0%d.%d\n\n", timeMin, timeSec, timeMs);
+          Sleep(1000);
         }
         else {
-          printf("Total time elapsed: %d:%d\n\n", timeMin, timeSec);
+          printf("Total time elapsed: %d:%d.%d\n\n", timeMin, timeSec, timeMs);
+          Sleep(1000);
         }
         watchState = 2;
       }
       else if (GetAsyncKeyState(VK_ESCAPE)) {   // TIMING --> SHUTDOWN
         watchState = 0;
       }
-      else {                                    // TIMING --> TIMING
-        
-      }
+      else {}                                   // TIMING --> TIMING
     }
 
     // "back alley"
