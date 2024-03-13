@@ -15,8 +15,8 @@
 int watchState = 1;
 
 // Flow control variables
-int waitFirst = 1;                                  // sets flag for first wait since init
-int timeFirst = 1;                                  // sets flag for first timing since init
+int waitFirst = 1;                              // sets flag for first wait since init
+int timeFirst = 1;                              // sets flag for first timing since init
 
 // Data variable
 int startTime;
@@ -49,7 +49,7 @@ int main () {
       if (GetAsyncKeyState(VK_ESCAPE)) {        // WAIT --> SHUTDOWN
         watchState = 0;
       }
-      else if (GetAsyncKeyState(VK_LSHIFT)) {                              // WAIT --> TIMING
+      else if (GetAsyncKeyState(VK_LSHIFT)) {   // WAIT --> TIMING
         timeFirst = 1;
         startTime = clock();
         watchState = 3;
@@ -68,19 +68,19 @@ int main () {
       if (GetAsyncKeyState(VK_LSHIFT)) {        // TIMING --> WAIT
         waitFirst = 1;
         stopTime = clock();
-        timeMs = stopTime - startTime;
-        timeSec = timeMs / CLOCKS_PER_SEC;
-        timeMin = timeSec / 60;
+        timeMs = stopTime - startTime;          // time in ms
+        timeSec = timeMs / CLOCKS_PER_SEC;      // time in sec
+        timeMin = timeSec / 60;                 // time in min
 
-        while (timeSec >= 60) {
-          timeSec = timeSec - 60;
+        while (timeSec >= 60) {                 // if seconds are greater than or equal to 60 sec, then subtract value by 60
+          timeSec = timeSec - 60;               // simulates 60 sec turning into 1 min
         }
 
-        if (timeSec <= 9) {
+        if (timeSec <= 9) {                     // when sec less than 9, prints sec with a 0 beforehand for formatting
           printf("Total time elapsed: %d:0%d.%d\n\n", timeMin, timeSec, timeMs);
           Sleep(1000);
         }
-        else {
+        else {                                  // else prints sec without the 0 beforehand for formatting
           printf("Total time elapsed: %d:%d.%d\n\n", timeMin, timeSec, timeMs);
           Sleep(1000);
         }
