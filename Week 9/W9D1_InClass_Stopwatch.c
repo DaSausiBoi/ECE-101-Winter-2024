@@ -1,7 +1,7 @@
 /*
   ECE 101
   Stopwatch
-  March 4, 2024
+  March 11, 2024
   Loreto Albaran
 */
 
@@ -21,6 +21,7 @@ int timeFirst = 1;                              // sets flag for first timing si
 // Data variable
 int startTime;
 int stopTime;
+int finalTime;
 int timeMs;
 int timeMin;
 int timeSec;
@@ -42,14 +43,14 @@ int main () {
 
     else if (watchState == 2) {                 // WAIT STATE
       if (waitFirst == 1) {                     // first run should print wait once
-        printf("Waiting, press ESC to shutdown or LSHIFT to start stopwatch...\n");
+        printf("Waiting, press CTRL + ESC to shutdown or CTRL + SHIFT to start stopwatch...\n");
         waitFirst = 0;                          // prevents "wait" print after first run
       }
 
-      if (GetAsyncKeyState(VK_ESCAPE)) {        // WAIT --> SHUTDOWN
+      if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_ESCAPE)) {        // WAIT --> SHUTDOWN
         watchState = 0;
       }
-      else if (GetAsyncKeyState(VK_LSHIFT)) {   // WAIT --> TIMING
+      else if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_LSHIFT) || GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_RSHIFT)) {   // WAIT --> TIMING
         timeFirst = 1;
         startTime = clock();
         watchState = 3;
@@ -61,15 +62,22 @@ int main () {
 
     else if (watchState == 3) {
       if (timeFirst == 1) {                     // first run should print timing once
-        printf("Stopwatch started, press ESC to shutdown or LSHIFT to stop...\n");
+        printf("Stopwatch started, press CTRL + ESC to shutdown or CTRL + SHIFT to stop...\n");
         timeFirst = 0;                          // prevents "timing" print after first run
       }
 
-      if (GetAsyncKeyState(VK_LSHIFT)) {        // TIMING --> WAIT
+      if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_LSHIFT) || GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_RSHIFT)) {        // TIMING --> WAIT
         waitFirst = 1;
         stopTime = clock();
-        timeMs = stopTime - startTime;          // time in ms
-        timeSec = timeMs / CLOCKS_PER_SEC;      // time in sec
+        finalTime = stopTime - startTime;       // raw time data
+        timeMs = finalTime;                     // time in ms
+
+        while(timeMs >= 100)                    // displays the first two digits in finalTime which represent timeMs
+        {
+          timeMs = timeMs / 10;
+        }
+
+        timeSec = finalTime / CLOCKS_PER_SEC;   // time in sec
         timeMin = timeSec / 60;                 // time in min
 
         while (timeSec >= 60) {                 // if seconds are greater than or equal to 60 sec, then subtract value by 60
@@ -86,7 +94,7 @@ int main () {
         }
         watchState = 2;
       }
-      else if (GetAsyncKeyState(VK_ESCAPE)) {   // TIMING --> SHUTDOWN
+      else if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_ESCAPE)) {   // TIMING --> SHUTDOWN
         watchState = 0;
       }
       else {}                                   // TIMING --> TIMING
