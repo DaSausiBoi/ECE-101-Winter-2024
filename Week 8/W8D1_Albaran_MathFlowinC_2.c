@@ -9,19 +9,19 @@
 #include <stdlib.h>
 
 // Global variables
-int pixelArray1[5][5] = {
+int pixelArray1[5][5] = {               // smiley face
     {0, 0, 0, 0, 0}, 
     {0, 1, 0, 1, 0}, 
     {0, 0, 0, 0, 0}, 
     {0, 1, 0, 1, 0}, 
     {0, 0, 1, 0, 0}};
-int pixelArray2[5][5] = {
+int pixelArray2[5][5] = {               // frowning face
     {0, 0, 0, 0, 0}, 
     {0, 1, 0, 1, 0}, 
     {0, 0, 0, 0, 0}, 
     {0, 0, 1, 0, 0}, 
     {0, 1, 0, 1, 0}};
-int keebInput = 0;          // holds keyboard input value from user
+int keebInput = 0;                      // holds keyboard input value from user
 
 int main () {
     while (1) {
