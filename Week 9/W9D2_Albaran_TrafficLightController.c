@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
-#include <time.h>
 #include <conio.h>
 
 // Global variables
@@ -18,21 +17,31 @@ int lightState = 1;
 int waitFirst = 1;                              // sets flag for first wait since init
 int timeFirst = 1;                              // sets flag for first timing since init
 
-// Data variable
-int startTime;
-int stopTime;
-int finalTime;
-int timeMs;
-int timeMin;
-int timeSec;
-int doubleSec;
-int singleSec;
+// Starts the N/S stoplight sequence
+void stoplight() {
+  printf("R\n");
+  Sleep(4000);
+  printf("R\n");
+  Sleep(2000);
+  printf("G\n");
+  Sleep(4000);
+  printf("Y\n");
+  Sleep(2000);
+}
+
+// Starts the night mode stoplight sequence
+void stoplightNightMode() {
+  printf("R\n");
+  Sleep(1500);
+  printf("\"OFF\"\n");
+  Sleep(1500);
+}
 
 int main () {
   while (1) {                                   // MAIN LOOP
     if (lightState == 0) {                      // SHUT STATE
       printf("Shutting down...\n");
-      Sleep(2000);                              // shutdown time simulation
+      Sleep(1000);                              // shutdown time simulation
       break;
     }
     else if (lightState == 1) {                 // INIT STATE
@@ -42,25 +51,16 @@ int main () {
     }
 
     else if (lightState == 2) {                 // WAIT STATE
-      if (waitFirst == 1) {                     // first run should print wait once
-        printf("Waiting, press CTRL + ESC to shutdown or CTRL + SHIFT to start stopwatch...\n");
-        waitFirst = 0;                          // prevents "wait" print after first run
-      }
-
-      if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_ESCAPE)) {        // WAIT --> SHUTDOWN
+      while (!GetAsyncKeyState(VK_ESCAPE)) {
+        while(!GetAsyncKeyState(VK_CONTROL) && !GetAsyncKeyState(VK_LCONTROL) || !GetAsyncKeyState(VK_CONTROL) && !GetAsyncKeyState(VK_RCONTROL)) {
+          stoplight();
+        }
         lightState = 0;
       }
-      else if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_LSHIFT) || GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_RSHIFT)) {   // WAIT --> TIMING
-        timeFirst = 1;
-        startTime = clock();
-        lightState = 3;
-      }
-      else {                                    // WAIT --> WAIT
-        lightState = 2;
-      }
+      lightState = 0;
     }
 
-    else if (lightState == 3) {
+    /*else if (lightState == 3) {
       if (timeFirst == 1) {                     // first run should print timing once
         printf("Stopwatch started, press CTRL + ESC to shutdown or CTRL + SHIFT to stop...\n");
         timeFirst = 0;                          // prevents "timing" print after first run
@@ -68,39 +68,16 @@ int main () {
 
       if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_LSHIFT) || GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_RSHIFT)) {        // TIMING --> WAIT
         waitFirst = 1;
-        stopTime = clock();
-        finalTime = stopTime - startTime;       // raw time data
-        timeMs = finalTime;                     // time in ms
-
-        while(timeMs >= 100)                    // displays the first two digits in finalTime which represent timeMs
-        {
-          timeMs = timeMs / 10;
-        }
-
-        timeSec = finalTime / CLOCKS_PER_SEC;   // time in sec
-        timeMin = timeSec / 60;                 // time in min
-
-        while (timeSec >= 60) {                 // if seconds are greater than or equal to 60 sec, then subtract value by 60
-          timeSec = timeSec - 60;               // simulates 60 sec turning into 1 min
-        }
-
-        if (timeSec <= 9) {                     // when sec less than 9, prints sec with a 0 beforehand for formatting
-          printf("Total time elapsed: %d:0%d.%d\n\n", timeMin, timeSec, timeMs);
-          Sleep(1000);
-        }
-        else {                                  // else prints sec without the 0 beforehand for formatting
-          printf("Total time elapsed: %d:%d.%d\n\n", timeMin, timeSec, timeMs);
-          Sleep(1000);
-        }
+        
         lightState = 2;
       }
-      else if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_ESCAPE)) {   // TIMING --> SHUTDOWN
+      else if (GetAsyncKeyState(VK_ESCAPE)) {   // TIMING --> SHUTDOWN
         lightState = 0;
       }
       else {}                                   // TIMING --> TIMING
-    }
+    }*/
 
-    // "back alley"
+    // "back alley" DO NOT TOUCH
     Sleep(100);                                 // master timer
   }
 }
